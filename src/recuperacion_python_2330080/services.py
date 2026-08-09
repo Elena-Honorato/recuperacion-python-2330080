@@ -1,8 +1,28 @@
 from .models import Videojuego
 
 
+def validar_videojuego(videojuego):
+    """Valida los datos de un videojuego."""
+    if videojuego.id <= 0:
+        raise ValueError("El ID debe ser mayor que cero.")
+
+    if not videojuego.titulo.strip():
+        raise ValueError("El título no puede estar vacío.")
+
+    if not videojuego.plataforma.strip():
+        raise ValueError("La plataforma no puede estar vacía.")
+
+    if videojuego.precio < 0:
+        raise ValueError("El precio no puede ser negativo.")
+
+    if videojuego.stock < 0:
+        raise ValueError("El stock no puede ser negativo.")
+
+
 def registrar_videojuego(videojuegos, videojuego):
-    """Registra un videojuego si su ID no está duplicado."""
+    """Registra un videojuego si sus datos son válidos y el ID no existe."""
+    validar_videojuego(videojuego)
+
     if buscar_videojuego(videojuegos, videojuego.id) is not None:
         raise ValueError("El ID del videojuego ya existe.")
 
@@ -42,6 +62,8 @@ def actualizar_videojuego(
     videojuego.precio = precio
     videojuego.stock = stock
 
+    validar_videojuego(videojuego)
+
 
 def eliminar_videojuego(videojuegos, videojuego_id):
     """Elimina un videojuego mediante su ID."""
@@ -73,3 +95,16 @@ def obtener_videojuego_mas_caro(videojuegos):
         return None
 
     return max(videojuegos, key=lambda videojuego: videojuego.precio)
+
+
+def obtener_resumen(videojuegos):
+    """Devuelve un resumen general del inventario."""
+    cantidad_videojuegos = len(videojuegos)
+    unidades_stock = sum(videojuego.stock for videojuego in videojuegos)
+    valor_inventario = calcular_valor_inventario(videojuegos)
+
+    return {
+        "cantidad_videojuegos": cantidad_videojuegos,
+        "unidades_stock": unidades_stock,
+        "valor_inventario": valor_inventario,
+    }
