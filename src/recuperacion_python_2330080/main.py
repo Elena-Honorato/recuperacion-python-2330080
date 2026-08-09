@@ -5,7 +5,6 @@ from .services import (
     calcular_valor_inventario,
     eliminar_videojuego,
     filtrar_por_plataforma,
-    listar_videojuegos,
     obtener_resumen,
     obtener_videojuego_mas_caro,
     registrar_videojuego,

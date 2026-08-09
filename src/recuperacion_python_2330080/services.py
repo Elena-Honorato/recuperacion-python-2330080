@@ -1,6 +1,3 @@
-from .models import Videojuego
-
-
 def validar_videojuego(videojuego):
     """Valida los datos de un videojuego."""
     if videojuego.id <= 0:
